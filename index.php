@@ -1,3 +1,27 @@
+<?php
+ob_start(); // Start output buffering
+
+$filename = 'comments.txt';
+
+// Load existing comments into an array
+$comments = [];
+if (file_exists($filename)) {
+    $comments = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+}
+
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $newComment = htmlspecialchars(trim($_POST['comment']));
+
+    // Save the new comment to the file
+    file_put_contents($filename, $newComment . PHP_EOL, FILE_APPEND);
+
+    // Redirect to the same page to avoid form resubmission
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang='en'>
 
@@ -18,24 +42,7 @@
         </form>
         <div id="comment-list">
             <?php
-
-            $filename = 'comments.txt';
-
-            $comments = [];
-            if (file_exists($filename)) {
-                $comments = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-            }
-
-            if (!in_array($newComment, $comments)) {
-                if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    $newComment = htmlspecialchars(trim($_POST['comment']));
-
-                    file_put_contents($filename, $newComment . PHP_EOL, FILE_APPEND);
-
-                    echo "<p>" . htmlspecialchars($newComment) . "</p>";
-                }
-            }
-
+            // Display all comments in the correct order
             foreach ($comments as $c) {
                 echo "<p>" . htmlspecialchars($c) . "</p>";
             }
