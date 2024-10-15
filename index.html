@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>My Simple Blog</title>
+</head>
+
+<body>
+    <div id="comments">
+        <h2>Comments</h2>
+        <form id="comment-form">
+            <label for="comment">Add a Comment:</label>
+            <textarea id="comment" required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="comment-list"></div>
+    </div>
+</body>
+
+<script>
+    document.getElementById('comment-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const comment = document.getElementById('comment').value;
+        const commentList = document.getElementById('comment-list');
+        const newComment = document.createElement('p');
+        newComment.textContent = comment;
+        commentList.appendChild(newComment);
+        document.getElementById('comment').value = ''; // Clear the textarea
+    });
+</script>
+
+</html>
