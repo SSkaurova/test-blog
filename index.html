@@ -21,6 +21,13 @@
 </body>
 
 <script>
+    function loadComments() {
+        const savedComments = localStorage.getItem('data');
+        if (savedComments) {
+            document.getElementById('comment-list').innerHTML = savedComments;
+        }
+    }
+    window.onload = loadComments;
     document.getElementById('comment-form').addEventListener('submit', function (event) {
         event.preventDefault();
         const comment = document.getElementById('comment').value;
@@ -28,8 +35,15 @@
         const newComment = document.createElement('p');
         newComment.textContent = comment;
         commentList.appendChild(newComment);
+        saveData();
         document.getElementById('comment').value = ''; // Clear the textarea
     });
+
+    function saveData() {
+        const commentList = document.getElementById('comment-list');
+        localStorage.setItem("data", commentList.innerHTML);
+    }
+
 </script>
 
 </html>
