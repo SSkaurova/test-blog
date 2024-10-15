@@ -26,12 +26,14 @@
                 $comments = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
             }
 
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                $newComment = htmlspecialchars(trim($_POST['comment']));
+            if (!in_array($newComment, $comments)) {
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    $newComment = htmlspecialchars(trim($_POST['comment']));
 
-                file_put_contents($filename, $newComment . PHP_EOL, FILE_APPEND);
+                    file_put_contents($filename, $newComment . PHP_EOL, FILE_APPEND);
 
-                echo "<p>" . htmlspecialchars($newComment) . "</p>";
+                    echo "<p>" . htmlspecialchars($newComment) . "</p>";
+                }
             }
 
             foreach ($comments as $c) {
