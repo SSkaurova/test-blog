@@ -19,8 +19,17 @@
 
 body {
     font-family: "Poppins-Medium";
+    background-color: #ffaddb;
+    color: #ffffff; 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .comments {
     font-family: "Poppins-Medium";
+    width: 80%; 
+    max-width: 600px;
+    text-align: center;
 }
