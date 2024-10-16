@@ -17,7 +17,7 @@
         url("fonts/Poppins-Light.ttf") format("opentype");
 }
 
-body {
+.container {
     font-family: "Poppins-Medium";
     background-color: #ffaddb;
     color: #ffffff; 
@@ -27,9 +27,105 @@ body {
     height: 100vh;
 }
 
+.comment-list {
+    width: 100%; /* Use full width for responsiveness */
+    max-width: 600px; /* Limit max width */
+    margin: 0 auto; /* Center the comment list */
+    text-align: center; /* Center text */
+    padding: 10px 0px; /* Padding around the list */
+}
+
+.comment-list p {
+    margin: 10px 0; /* Space between comments */
+}
+
 .comments {
     font-family: "Poppins-Medium";
     width: 80%; 
     max-width: 600px;
     text-align: center;
+}
+
+form {
+    width: 100%; /* Use full width for responsiveness */
+    margin: 20px 0; /* Add vertical margin */
+    display: flex; /* Use flexbox to align items */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center align items */
+}
+
+textarea {
+    width: 60%; 
+    margin-bottom: 10px;
+    margin-top: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    background-color: #ffffff; /* Button background color */
+    color: #ffaddb; /* Text color */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding inside the button */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+    font-size: 16px; /* Font size */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.login {
+    font-family: "Poppins-Medium";
+    width: 80%; 
+    max-width: 600px;
+    text-align: center;
+}
+
+.cont {
+    font-family: "Poppins-Medium";
+    background-color: #0f1455;
+    color: #ffffff; 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.register-link {
+    color: #87b4f7; /* Change to your desired color */
+    text-decoration: none; /* Optional: removes the underline */
+}
+
+.register-link:hover {
+    color: #ffdcf0; /* Change to a different color on hover */
+}
+
+.login-button{
+    background-color: #ffffff; /* Button background color */
+    color: #0f1455; /* Text color */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding inside the button */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+    font-size: 16px; /* Font size */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.cont2 {
+    font-family: "Poppins-Medium";
+    background-color: #d16d2a;
+    color: #ffffff; 
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-link {
+    color: #741609; /* Change to your desired color */
+    text-decoration: none; /* Optional: removes the underline */
+}
+
+.login-link:hover {
+    color: #ffdcf0; /* Change to a different color on hover */
 }

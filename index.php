@@ -1,23 +1,47 @@
 <?php
-ob_start(); // Start output buffering
 
-$filename = 'comments.txt';
+session_start();
+require 'db_connection.php';
 
-// Load existing comments into an array
-$comments = [];
-if (file_exists($filename)) {
-    $comments = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+ob_start();
+
+$host = 'db';
+$username = 'root';
+$password = 'example';
+$dbname = 'my_database';
+
+$conn = new mysqli($host, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+$comments = [];
+$sql = "SELECT comment FROM comments";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $comments[] = $row['comment'];
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_SESSION['user_id'])) {
     $newComment = htmlspecialchars(trim($_POST['comment']));
 
-    // Save the new comment to the file
-    file_put_contents($filename, $newComment . PHP_EOL, FILE_APPEND);
+    $stmt = $conn->prepare("INSERT INTO comments (comment) VALUES (?)");
+    $stmt->bind_param("s", $newComment);
+    $stmt->execute();
+    $stmt->close();
 
-    // Redirect to the same page to avoid form resubmission
     header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
+
+$conn->close();
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: login.php");
     exit();
 }
 ?>
@@ -33,20 +57,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <div id="comments">
-        <h2>Comments</h2>
-        <form action="" method="POST" id="comment-form">
-            <label for="comment">Add a Comment:</label>
-            <textarea id="comment" name="comment" required></textarea>
-            <button type="submit">Submit</button>
-        </form>
-        <div id="comment-list">
-            <?php
-            // Display all comments in the correct order
-            foreach ($comments as $c) {
-                echo "<p>" . htmlspecialchars($c) . "</p>";
-            }
-            ?>
+    <div class="container">
+        <div id="comments" class="comments">
+            <h2>Comments</h2>
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <p>Welcome, <?php echo $_SESSION['username']; ?>! <a href="?logout">Logout</a></p>
+            <?php else: ?>
+                <p>You must be logged in to comment.</p>
+                <p><a href="login.php">Login</a> | <a href="register.php">Register</a></p>
+            <?php endif; ?>
+            <form action="" method="POST" id="comment-form">
+                <label for="comment">Add a Comment:</label>
+                <textarea id="comment" name="comment" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+            <div id="comment-list" class="comment-list">
+                <?php
+                foreach ($comments as $c) {
+                    echo "<p>" . htmlspecialchars($c) . "</p>";
+                }
+                ?>
+            </div>
         </div>
     </div>
 </body>
