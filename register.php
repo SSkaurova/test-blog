@@ -1,23 +1,15 @@
 <?php
-
 session_start();
 require 'db_connection.php';
+require 'User.php'; // Include the User class
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = htmlspecialchars(trim($_POST['username']));
-    $password = password_hash(trim($_POST['password']), PASSWORD_DEFAULT);
+    $userManager = new User($conn);
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows == 0) {
-        $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-        $stmt->bind_param("ss", $username, $password);
-        $stmt->execute();
-
-        $_SESSION['message'] = "Registration successful! You can now log in.";
+    if ($userManager->register($username, $password)) {
+        $_SESSION['message'] = "Registration successful!";
         header("Location: login.php");
         exit();
     } else {
@@ -28,13 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
     <div class="cont2">
         <div id="comments" class="comments">
@@ -48,13 +38,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <br>
                 <button type="submit" class="login-button">Register</button>
             </form>
-            <a href="login.php" class="login-link">Login</a></p>
+            <a href="login.php" class="login-link">Login</a>
             <?php if (isset($_SESSION['message'])): ?>
-                <p><?php echo $_SESSION['message'];
-                unset($_SESSION['message']); ?></p>
+                <p><?php echo $_SESSION['message']; unset($_SESSION['message']); ?></p>
             <?php endif; ?>
         </div>
     </div>
 </body>
-
 </html>
